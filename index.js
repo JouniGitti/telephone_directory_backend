@@ -3,27 +3,33 @@
 const express = require('express')
 const { response } = require('express')
 const app = express()
+const morgan = require('morgan')
+morgan.token('body', function (req, res) {
+    console.log('morganissa', req.body)
+    return JSON.stringify(req.body)
+  })
 
 app.use(express.json())
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 let persons = [
     {
-      "name": "Arto Hellas",
+      "name": "Aarne Aarnela",
       "number": "040-123456",
       "id": 1
     },
     {
-      "name": "Ada Lovelace",
+      "name": "Bertta Berttala",
       "number": "39-44-5323523",
       "id": 2
     },
     {
-      "name": "Dan Abramov",
+      "name": "Celsius Celsiusson",
       "number": "12-43-234345",
       "id": 3
     },
     {
-      "name": "Mary Poppendieck",
+      "name": "Daavid Daavidsson",
       "number": "39-23-6423122",
       "id": 4
     }
@@ -69,10 +75,8 @@ const generatedId = () => {
 }
 
 app.post('/api/persons', (request, response) => {
-    console.log('kukkuu')
     const body = request.body
-    console.log('body on', body)
-    const nameAlreadyExists = persons.filter(person => person.name == body.name)
+    const nameAlreadyExists = persons.find(person => person.name === body.name)
     if (!body.name || !body.number) {
         return response.status(400).json({
             error: 'name or number missing'
@@ -88,7 +92,6 @@ app.post('/api/persons', (request, response) => {
         id: generatedId()
     }
     persons = persons.concat(person)
-    console.log('persons:', persons)
     response.json(person)
 })
 
