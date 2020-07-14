@@ -1,9 +1,13 @@
 // to start the server: npm run dev (win cmd open in the directory)
+// https://enthousiaste-monsieur-26140.herokuapp.com/ 
+// | https://git.heroku.com/enthousiaste-monsieur-26140.git
+
 
 const express = require('express')
 const { response } = require('express')
 const app = express()
 const morgan = require('morgan')
+const cors = require('cors')
 morgan.token('body', function (req, res) {
     console.log('morganissa', req.body)
     return JSON.stringify(req.body)
@@ -11,6 +15,7 @@ morgan.token('body', function (req, res) {
 
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+app.use(cors())
 
 let persons = [
     {
@@ -95,7 +100,7 @@ app.post('/api/persons', (request, response) => {
     response.json(person)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
