@@ -6,13 +6,19 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "rmdir /S/Q build && cd .. && npm run build --prod && robocopy  /E /S c:\\users\\administrator\\desktop\\JS_opiskelua\\puhelinluettelo\\build c:\\users\\administrator\\desktop\\JS_opiskelua\\puhelinluettelo\\back_end_puhelinluettelo\\build\\ exit 0",
+    "deploy": "git push heroku master",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+    "logs:prod": "heroku logs --tail"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "mongoose": "^5.9.24",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
